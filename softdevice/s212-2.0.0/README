@@ -1,0 +1,31 @@
+This directory should contain the contents of the s212-2.0.0 soft device,
+which is needed to support this packet tracer.  However, the Dynastream
+license agreement prohibits the distribution of the soft device.  End user's
+will need to download it themselves and unpack it here.
+
+Once unpacked, the contents should look like this:
+
+.../softdevice/s212-2.0.0
+.../softdevice/s212-2.0.0/ANT SoftDevice Licenses.pdf
+.../softdevice/s212-2.0.0/ANT SoftDevice Licenses.txt
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/ant_error.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/ant_interface.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/ant_parameters.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/nrf52
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/nrf52/nrf_mbr.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/nrf_error.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/nrf_error_sdm.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/nrf_error_soc.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/nrf_nvic.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/nrf_sdm.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/nrf_soc.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0.API/include/nrf_svc.h
+.../softdevice/s212-2.0.0/ANT_s212_nrf52832_2.0.0_readme.txt
+.../softdevice/s212-2.0.0/ANT_s212_nrf52_2.0.0.hex
+.../softdevice/s212-2.0.0/ANT_s212_nrf52_2.0.0_releasenotes.pdf
+.../softdevice/s212-2.0.0/ANT_s212_s332_nrf52_2.0.0_migration_document.pdf
+.../softdevice/s212-2.0.0/net.ld
+.../softdevice/s212-2.0.0/README
+.../softdevice/s212-2.0.0/s132_nrf52_3.0.0_migration-document.pdf

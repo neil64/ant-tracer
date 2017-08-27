@@ -1,0 +1,32 @@
+#!/bin/bash
+
+jlink=${JLINK:-/usr/local/bin/JLinkExe}
+tmp=`mktemp -t jlink`
+target=${TARGET:-puck.hex}
+
+if [ -z "$1" ]; then
+    echo "No deviceid specified! Abort!"
+    exit 1
+fi
+echo $target
+echo $1
+echo $jlink
+
+./devid $target $1 > temp.hex
+
+cat > $tmp << EOF
+power off
+power on
+erase
+sleep 500
+loadfile temp.hex
+r
+g
+sleep 3000
+q
+EOF
+
+$jlink -device nrf52 -if swd -speed 1000 $tmp
+err="$?"
+rm -f $tmp temp.hex
+exit "$err"

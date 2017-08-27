@@ -1,0 +1,11 @@
+/Makefile-local
+/Makefile-depend
+/version.h
+/VERSION-local
+/tracer.elf
+/tracer.bin
+/tracer.hex
+/devid.hex
+/flash.jlink
+/erase-all.jlink
+.gdbinit

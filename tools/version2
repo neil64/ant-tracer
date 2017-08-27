@@ -1,0 +1,69 @@
+#!/bin/bash
+#
+#   Calculate the version number of the current compilation, and
+#   generate a version.h file.
+#
+
+if [ $# -lt 1 ]
+then
+    echo 'usage: version <version-file> [<inc>]'
+    echo '    where <version-file> is a file containing a number'
+    echo '    in the form "1.2.345", which would correspond to'
+    echo '    version 1.2.345, and <inc> if given will be added to'
+    echo '    the existing version are stored back into <version-file>.'
+    exit 1
+fi
+
+#
+#  Extract what we need from the command line
+#
+vfile="$1"
+inc="$(($2 + 0))"
+
+#
+#  Check the syntax of the version file, and extract the version number
+#
+vers=$(<$vfile)
+if expr "$vers" : '^[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*$' >/dev/null
+then
+    rel="${vers#*.}"
+    rev="${rel##*.}"
+    rel="${rel%%.*}"
+    vers="${vers%%.*}"
+else
+    echo 'Badly formatted version number.'
+    exit 1
+fi
+
+#
+#  Add the increment as needed
+#
+rev="$(($rev + 0 + inc))"
+
+#
+#  If we are to increment the version, do it now.
+#
+if [[ inc != 0 ]]
+then
+    echo "$vers.$rel.$rev" >$vfile
+fi
+
+#
+#  Generate a C-style header containing the version information
+#
+cat <<eof
+#ifndef __VERSION_H__
+#define __VERSION_H__
+
+/**********************************************************************/
+
+#define VERSION_VERSION   $vers
+#define VERSION_RELEASE   $rel
+#define VERSION_REVISION  $rev
+#define VERSION_HEX       `printf '0x%02x%02x%04x' $vers $rel $rev`
+#define VERSION_STRING    "`printf '%d.%d.%d' $vers $rel $rev`"
+#define VERSION_DATE      "`date '+%b %d %Y %H:%M:%S'`"
+
+/**********************************************************************/
+#endif // __VERSION_H__
+eof

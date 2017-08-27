@@ -1,0 +1,78 @@
+#!/bin/bash
+#
+#	Compile a file using the given file names and compiler argument
+#	list.  If the compile succeeds, only the file name is seen by the
+#	user;  if the compiler generates any output (warnings), they are
+#	reported;  if the compiler fails, all information is reported.
+#
+#	This is all to help the user see the big picture, minus all of
+#	the lengthy repitition of the compiler command line.
+#
+#	The arguments expected here are:
+#
+#	    compile <source-file> [<dependencies-file>] : <args>
+#
+#	The <dependency-file> is optional, and if provided, the file will
+#	be located and moved to the local dependency directory ".depend".
+#			(Not implemented yet)
+#
+
+
+###########################
+#
+# Get the source file name, dependency file name and the compiler args
+#
+
+if [ $# -lt 2 ]
+then
+	echo 'usage: compile <src-file> [<depend-file>] : <args>'
+	exit 1
+fi
+
+srcFile=$1
+
+if [ $# -ge 3 -a $3 = ':' ]
+then
+	depFile=$2
+	shift 3
+elif [ $# -ge 2 -a $2 = ':' ]
+then
+	depFile=
+	shift 2
+else
+	depFile=
+	shift 1
+fi
+#
+#	`srcFile' is now the source file name, `depFile' is now the
+#	dependency file (if given), and `argv' is the compiler argument
+#	list, the first of which is expected to be the compiler executable.
+#
+###########################
+#
+#	Print the name of the file we are about to process.
+#
+echo "$srcFile:"
+
+###########################
+#
+#	Invoke the compiler, saving the output to internal strings.
+#
+
+rslt=`$@ 2>&1`
+err=$?
+
+if [ $err -ne 0 ]
+then
+	echo
+	echo "$@"
+	echo
+	echo "$rslt"
+else
+	if [ -n "$rslt" ]
+	then
+		echo "$rslt" | sed -e 's/^/   /'
+	fi
+fi
+
+exit $err

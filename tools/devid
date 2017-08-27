@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+#   OttoQ Puck/Relay Hex file device ID injector.
+#
+#   Requirements:
+#       1. Requires the hexen tool in the parent directory of this script
+#       2. Requires a puck.hex file as the first input
+#       3. Requires the device id to set as the second
+#
+#   Result:
+#       The modified hex file is output to standard output
+#
+#   Usage:
+#   > devid <hex path> <device id>
+#
+tooldir=${0%/*}
+prog="${0##*/}"
+
+if [ -z "$1" ]; then
+    echo "No hex file specified! See usage!"
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    echo "No device ID specified! See usage!"
+    exit 1
+fi
+
+subhex=`$tooldir/hexen 1000108C $2 | grep '^:04108C00'`
+sed -e "s/^:04108C00.*/$subhex/" $1

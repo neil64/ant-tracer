@@ -1,0 +1,34 @@
+#!/bin/bash
+
+
+if [ $# -lt 3 ]
+then
+	echo 'usage: sizer <file> <end-sym> <start-addr> <max-addr>'
+	exit 1
+fi
+
+file=$1
+sym=$2
+start=$3
+max=$4
+
+start=$((start))
+max=$((max))
+
+
+x=($(arm-nm -n $file | grep $sym))
+
+
+if [ $? -ne 0 ]
+then
+	echo "fail..."
+	exit 1
+fi
+
+x="0x0$x"
+x=$((x))
+
+used=$((x - start))
+remain=$((max - x))
+
+echo "=============    Used $used bytes, $remain remaining   =============="

@@ -1,0 +1,35 @@
+#!/bin/bash
+
+
+TOP=$0
+case "$TOP" in
+	*/tools/mkout)
+		TOP=${TOP%/tools/mkout}
+		;;
+	*)
+		echo "mkout: Can't find TOP directory"
+		exit 1
+		;;
+esac
+
+OUT=$TOP/out
+VERS=$1
+shift
+
+mkdir -p $OUT || exit 1
+
+ex()
+{
+	echo '   ===' "$@"
+	eval "$@" || exit 1
+}
+
+while [ $# -ge 1 ]
+do
+	f=$1
+	fb=${f##*/}
+	ex cp $f $OUT/$fb-$VERS
+	ex ln -f $OUT/$fb-$VERS $OUT/$fb
+
+	shift
+done

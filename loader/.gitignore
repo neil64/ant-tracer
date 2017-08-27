@@ -1,0 +1,7 @@
+/Makefile-local
+/VERSION-local
+/version.h
+
+*.hex
+*.elf
+*.bin

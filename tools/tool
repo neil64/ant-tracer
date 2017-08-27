@@ -1,0 +1,15 @@
+#!/bin/bash
+
+tooldir=${0%/*}
+tool=${0##*/}
+
+if [ `uname` = Darwin ]
+then
+    ${tooldir}/${tool}-darwin "$@"
+elif [ `uname` = Linux ]
+then
+    ${tooldir}/${tool}-linux "$@"
+else
+    echo "Unknown host for ${tool}"
+    exit 1
+fi

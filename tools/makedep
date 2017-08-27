@@ -1,0 +1,89 @@
+#!/bin/sh
+#
+#	Given a list of .o files, append dependencies onto the end of
+#	a makefile.  The makefile must be in the current directory, and
+#	must be called `Makefile' or `makefile'.  Each .o file is converted
+#	to a source file by substituting a suffix and looking for the
+#	resulting file.  The list, tried in order, is: .C, .c, .S, .s.
+#	If nothing is found, the file is ignored.
+#
+#	(On case insensitive file systems, search for .c and .S only.)
+#
+#	Synopsis:
+#		makedep <makefile-name> <compiler name> \
+#				<compiler-arguments> <object-file-names>
+#
+
+MAKEFILE=$1; shift
+CC=$1; shift
+CFLAGS=
+TMP1=dependencies.1
+TMP2=dependencies.2
+
+
+SUFFIXES='.C .c .S .s'
+case `uname` in
+	*[Dd]arwin*)
+		SUFFIXES='.c .S'
+		;;
+esac
+
+
+while [ $# -gt 0 ]
+do
+	case "$1" in
+	-*)
+		CFLAGS="$CFLAGS $1"
+		;;
+	*)
+		break
+		;;
+	esac
+	shift
+done
+
+if [ ! -f $MAKEFILE ]
+then
+	echo "Can't find the makefile $MAKEFILE"
+	exit 1
+fi
+
+if [ $# -le 0 ]
+then
+	echo "No files to process"
+	exit 0
+fi
+
+
+cat /dev/null >$TMP1
+
+while [ $# -gt 0 ]
+do
+	for x in $SUFFIXES
+	do
+		f=`echo $1 | sed "s/\.o\$/$x/"`
+		if [ -f "$f" ]
+		then
+			cmd="$CC -MM -MG -MT $1 $CFLAGS $f"
+			echo "  $cmd"
+			if $cmd >>$TMP1
+			then
+				:
+			else
+				rm -f $TMP1 $TMP2
+				exit 1
+			fi
+
+			break
+		fi
+	done
+	shift
+done
+
+
+sed '/DEPENDENCIES - DO NOT REMOVE/,$d' $MAKEFILE >$TMP2
+
+echo "#####  AUTOMATICALLY GENERATED DEPENDENCIES - DO NOT REMOVE  #####" \
+								>>$TMP2
+cat $TMP2 $TMP1 >$MAKEFILE
+rm -f $TMP1 $TMP2

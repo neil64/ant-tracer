@@ -1,0 +1,39 @@
+                            An ANT packet tracer.
+
+
+This is an example Nordic nRF52 application that can receive and decode
+ANT protocol packets.  It is a very basic packet trace utility, decoding
+ANT packets to a simple channel ID and hex dump of the packet payload.
+It contains various other useful things, such as a debugger, command
+interpreter, super loop, and other cool trinkets.
+
+ANT is a proprietary protocol.  Their documentation does not include any
+details of the on air format.  This trace utility was constructed from an
+understanding of what they do document, gleaning details from the on air
+data I managed to receive, testing and a lot of guess work.  It works well
+enough for it to have been very useful in optimizing our network.
+
+To build this code, you will need a suitable GCC compiler, configured for
+the ARM Cortex-M, and to download a copy of the ANT soft-device.  For the
+GCC, search the web for a ARM ELF compiler.  For the soft device, you will
+need to go to the Dynastream site and download the s212-2.0.0 or similar
+soft device.  Look in the softdevice/s212-2.0.0 directory for how this
+should be unpacked.
+
+Go to the "tools" directory and type `make'.  It should build all of the
+tools that are required for the build, and then some.
+
+Go into the tracer/main directory and type `make'.  It should build a
+"tracer.hex" file, if all goes well.
+
+To load it up using a Segger JTAG tool, use the "loadfile tracer.hex"
+command to program the target device flash, and execute it.  If all goes
+well, the tracer utility will start printing ANT packets onto the Segger
+RTT debugger output.
+
+(Sorry for the terseness of these instructions.  As time permits, I will
+improve on this.)
+
+
+Neil.
+(2017-08-26)
